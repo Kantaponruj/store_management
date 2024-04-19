@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:store_management/screens/components/calculator_component.dart';
+import 'package:store_management/screens/components/calculator.dart';
 
 class CustomAppBarComponent extends StatefulWidget
     implements PreferredSizeWidget {
