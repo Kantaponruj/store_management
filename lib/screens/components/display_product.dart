@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:store_management/screens/components/product_category_card.dart';
 
 class DiaplyProductListComponent extends StatelessWidget {
-  final List<String> products;
+  final List<Widget> children;
 
   const DiaplyProductListComponent({
     super.key,
-    required this.products,
+    required this.children,
   });
 
   @override
@@ -22,9 +21,7 @@ class DiaplyProductListComponent extends StatelessWidget {
               crossAxisSpacing: 10,
             ),
             delegate: SliverChildListDelegate(
-              products
-                  .map((e) => ProductCategoryCardComponent(productName: e))
-                  .toList(),
+              children,
             ),
           )
         ],

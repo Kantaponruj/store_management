@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 // Project imports:
 import 'package:store_management/screens/main_page.dart';
+import 'package:store_management/shared/components/color_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         textTheme: GoogleFonts.ibmPlexSansThaiTextTheme(),
-        primaryColor: const Color(0xff034C8C),
+        primaryColor: ColorTheme.primary,
+        scaffoldBackgroundColor: ColorTheme.background,
         useMaterial3: true,
       ),
       home: const MainPage(),

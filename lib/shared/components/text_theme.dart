@@ -57,6 +57,12 @@ class CustomTextTheme {
     fontFamily: font,
   );
 
+  static TextStyle smallBodyMedium = TextStyle(
+    fontSize: smallSize,
+    fontWeight: FontWeight.w500,
+    fontFamily: font,
+  );
+
   static TextStyle smallBodyBold = TextStyle(
     fontSize: smallSize,
     fontWeight: FontWeight.bold,

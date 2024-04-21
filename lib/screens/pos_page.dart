@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:store_management/models/transaction.dart';
 import 'package:store_management/screens/components/categories_tab_bar.dart';
 import 'package:store_management/shared/components/color_theme.dart';
+import 'package:store_management/shared/components/text_theme.dart';
 
+import '../models/product.dart';
+import '../utils/constant.dart';
 import 'components/display_product.dart';
+import 'components/product_category_card.dart';
 
 class POSPage extends StatefulWidget {
   const POSPage({super.key});
@@ -12,50 +17,50 @@ class POSPage extends StatefulWidget {
 }
 
 class _POSPageState extends State<POSPage> {
+  List<TransactionProduct> products = [];
+  Transaction? transaction;
+
   @override
   Widget build(BuildContext context) {
-    final List<String> drinkProducts = [
-      "Drink 1",
-      "Drink 2",
-      "Drink 3",
-      "Drink 4",
-      "Drink 5",
-      "Drink 6",
-      "Drink 7",
-      "Drink 8",
-      "Drink 9",
-      "Drink 10",
-      "Drink 11",
-      "Drink 12",
-      "Drink 13",
-      "Drink 14",
-      "Drink 15",
-      "Drink 16",
-      "Drink 17",
-      "Drink 18",
-      "Drink 19",
-      "Drink 20",
-      "Drink 21",
-      "Drink 22",
-      "Drink 23",
-      "Drink 24",
-      "Drink 25",
-      "Drink 26",
-      "Drink 27",
-      "Drink 28",
-      "Drink 29",
-      "Drink 30",
-    ];
-    final List<String> foodProducts = [
-      "Food 1",
-      "Food 2",
-      "Food 3",
-      "Food 4",
-      "Food 5",
-    ];
-    final List<String> otherProducts = [
-      "Product 1",
-    ];
+    void onTapAddProduct(Product product) {
+      double total = 0.0;
+
+      TransactionProduct item = TransactionProduct(
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        amount: product.price,
+        quantity: 1,
+      );
+
+      final duplicateIndex =
+          products.indexWhere((element) => element.id == item.id);
+
+      if (duplicateIndex != -1) {
+        debugPrint(duplicateIndex.toString());
+        products[duplicateIndex].quantity += 1;
+        final total = products[duplicateIndex].price + product.price;
+        products[duplicateIndex].amount = total;
+      } else {
+        products.add(item);
+      }
+
+      for (int i = 0; i < products.length; i++) {
+        final price = products[i].price;
+        final quantity = products[i].quantity;
+
+        total += price * quantity;
+      }
+
+      transaction = Transaction(
+        id: "${products.length}_${DateTime.now()}",
+        amount: total,
+        date: DateTime.now(),
+        products: products,
+      );
+
+      setState(() {});
+    }
 
     return Container(
       color: ColorTheme.background,
@@ -77,13 +82,32 @@ class _POSPageState extends State<POSPage> {
                       categories: const ["เครื่องดื่ม", "อาหาร", "อื่น ๆ"],
                       tabBarView: [
                         DiaplyProductListComponent(
-                          products: drinkProducts,
+                          children: drinkProducts
+                              .map((product) => ProductCategoryCardComponent(
+                                    productName: product.name,
+                                    onTap: () {
+                                      onTapAddProduct(product);
+                                    },
+                                  ))
+                              .toList(),
                         ),
                         DiaplyProductListComponent(
-                          products: foodProducts,
+                          children: foodProducts
+                              .map((e) => ProductCategoryCardComponent(
+                                  productName: e.name,
+                                  onTap: () {
+                                    debugPrint(e.id);
+                                  }))
+                              .toList(),
                         ),
                         DiaplyProductListComponent(
-                          products: otherProducts,
+                          children: otherProducts
+                              .map((e) => ProductCategoryCardComponent(
+                                  productName: e.name,
+                                  onTap: () {
+                                    debugPrint(e.id);
+                                  }))
+                              .toList(),
                         ),
                       ],
                     ),
@@ -95,115 +119,153 @@ class _POSPageState extends State<POSPage> {
           const SizedBox(width: 20),
           Expanded(
             flex: 3,
-            child: Container(
-              margin: const EdgeInsets.only(left: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(10)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(10)),
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "สรุปบิล",
+                                    style: CustomTextTheme.subtitleBold,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () => {
+                                  setState(() {
+                                    products.clear();
+                                    transaction = null;
+                                  })
+                                },
+                                child: const Icon(
+                                  Icons.delete_outlined,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: products.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                dense: true,
+                                visualDensity:
+                                    const VisualDensity(vertical: -3),
+                                leading: Text(
+                                    "${products[index].quantity.toString()}x"),
+                                title: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      products[index].name,
+                                      style: CustomTextTheme.smallBody,
+                                    ),
+                                    Row(
+                                      children: [
+                                        products[index].quantity > 1
+                                            ? Padding(
+                                                padding: const EdgeInsets.only(
+                                                  right: 40,
+                                                ),
+                                                child: Text(
+                                                  "${products[index].price}/ชิ้น",
+                                                  style: CustomTextTheme
+                                                      .description,
+                                                ),
+                                              )
+                                            : const SizedBox.shrink(),
+                                        Text(
+                                          products[index].amount.toString(),
+                                          style:
+                                              CustomTextTheme.smallBodyMedium,
+                                        ),
+                                        Text(
+                                          " บาท",
+                                          style: CustomTextTheme.smallBody,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "รวมทั้งสิ้น",
+                                style: CustomTextTheme.bodyMedium,
+                              ),
+                              const Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Text(
+                                  transaction?.amount.toString() ?? "0",
+                                  style: CustomTextTheme.titleBold.copyWith(
+                                    color: ColorTheme.success,
+                                  ),
+                                ),
+                              ),
+                              const Text(
+                                "บาท",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(10),
+                    ),
+                    color: Color(0xff034C8C),
+                  ),
+                  alignment: Alignment.center,
+                  height: 60,
+                  child: InkWell(
+                    onTap: () => {},
+                    child: const Text(
+                      "ชำระเงิน",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(16),
-                            child: Row(
-                              children: [
-                                const Text(
-                                  "รายการสินค้า",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const Spacer(),
-                                GestureDetector(
-                                  // onTap: () => clearAll(),
-                                  child: const Icon(
-                                    Icons.delete_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Divider(
-                            color: Colors.grey.withOpacity(0.3),
-                          ),
-                          // ListView.builder(
-                          //   shrinkWrap: true,
-                          //   itemCount: products.length,
-                          //   itemBuilder: (context, index) {
-                          //     return ListTile(
-                          //       leading: Text(
-                          //           "${products[index].quantity.toString()}x"),
-                          //       title: Text("รายการที่ ${index + 1}"),
-                          //       trailing: Text("${products[index].price} บาท"),
-                          //     );
-                          //   },
-                          // ),
-                          const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "รวมทั้งสิ้น",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Spacer(),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 10),
-                                  child: Text(
-                                    "0",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  "บาท",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
                   ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.vertical(
-                        bottom: Radius.circular(10),
-                      ),
-                      color: Color(0xff034C8C),
-                    ),
-                    alignment: Alignment.center,
-                    height: 60,
-                    child: InkWell(
-                      onTap: () => {},
-                      child: const Text(
-                        "ชำระเงิน 0 บาท",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           )
         ],
