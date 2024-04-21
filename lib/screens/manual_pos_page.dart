@@ -24,7 +24,7 @@ class _ManualPOSPageState extends State<ManualPOSPage> {
       child: Row(
         children: [
           Expanded(
-            flex: 5,
+            flex: 6,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Container(
@@ -204,7 +204,7 @@ class _ManualPOSPageState extends State<ManualPOSPage> {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Container(
               margin: const EdgeInsets.only(left: 20),
               child: Column(
