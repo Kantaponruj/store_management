@@ -116,156 +116,159 @@ class _POSPageState extends State<POSPage> {
               ),
             ),
           ),
-          const SizedBox(width: 20),
           Expanded(
             flex: 3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(10)),
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "สรุปบิล",
-                                    style: CustomTextTheme.subtitleBold,
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () => {
-                                  setState(() {
-                                    products.clear();
-                                    transaction = null;
-                                  })
-                                },
-                                child: const Icon(
-                                  Icons.delete_outlined,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: products.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                dense: true,
-                                visualDensity:
-                                    const VisualDensity(vertical: -3),
-                                leading: Text(
-                                    "${products[index].quantity.toString()}x"),
-                                title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      products[index].name,
-                                      style: CustomTextTheme.smallBody,
-                                    ),
-                                    Row(
-                                      children: [
-                                        products[index].quantity > 1
-                                            ? Padding(
-                                                padding: const EdgeInsets.only(
-                                                  right: 40,
-                                                ),
-                                                child: Text(
-                                                  "${products[index].price}/ชิ้น",
-                                                  style: CustomTextTheme
-                                                      .description,
-                                                ),
-                                              )
-                                            : const SizedBox.shrink(),
-                                        Text(
-                                          products[index].amount.toString(),
-                                          style:
-                                              CustomTextTheme.smallBodyMedium,
-                                        ),
-                                        Text(
-                                          " บาท",
-                                          style: CustomTextTheme.smallBody,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            children: [
-                              Text(
-                                "รวมทั้งสิ้น",
-                                style: CustomTextTheme.bodyMedium,
-                              ),
-                              const Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Text(
-                                  transaction?.amount.toString() ?? "0",
-                                  style: CustomTextTheme.titleBold.copyWith(
-                                    color: ColorTheme.success,
-                                  ),
-                                ),
-                              ),
-                              const Text(
-                                "บาท",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(10),
-                    ),
-                    color: Color(0xff034C8C),
-                  ),
-                  alignment: Alignment.center,
-                  height: 60,
-                  child: InkWell(
-                    onTap: () => {},
-                    child: const Text(
-                      "ชำระเงิน",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+            child: Container(
+              margin: const EdgeInsets.only(left: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(10)),
                         color: Colors.white,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "สรุปบิล",
+                                      style: CustomTextTheme.subtitleBold,
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () => {
+                                    setState(() {
+                                      products.clear();
+                                      transaction = null;
+                                    })
+                                  },
+                                  child: const Icon(
+                                    Icons.delete_outlined,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: products.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  dense: true,
+                                  visualDensity:
+                                      const VisualDensity(vertical: -3),
+                                  leading: Text(
+                                      "${products[index].quantity.toString()}x"),
+                                  title: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        products[index].name,
+                                        style: CustomTextTheme.smallBody,
+                                      ),
+                                      Row(
+                                        children: [
+                                          products[index].quantity > 1
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    right: 40,
+                                                  ),
+                                                  child: Text(
+                                                    "${products[index].price}/ชิ้น",
+                                                    style: CustomTextTheme
+                                                        .description,
+                                                  ),
+                                                )
+                                              : const SizedBox.shrink(),
+                                          Text(
+                                            products[index].amount.toString(),
+                                            style:
+                                                CustomTextTheme.smallBodyMedium,
+                                          ),
+                                          Text(
+                                            " บาท",
+                                            style: CustomTextTheme.smallBody,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "รวมทั้งสิ้น",
+                                  style: CustomTextTheme.bodyMedium,
+                                ),
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    transaction?.amount.toString() ?? "0",
+                                    style: CustomTextTheme.titleBold.copyWith(
+                                      color: ColorTheme.success,
+                                    ),
+                                  ),
+                                ),
+                                const Text(
+                                  "บาท",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ),
-              ],
+                  Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        bottom: Radius.circular(10),
+                      ),
+                      color: Color(0xff034C8C),
+                    ),
+                    alignment: Alignment.center,
+                    height: 60,
+                    child: InkWell(
+                      onTap: () => {},
+                      child: const Text(
+                        "ชำระเงิน",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           )
         ],
