@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'color_theme.dart';
+import '../theme/color_theme.dart';
 
 class BottomNavBarComponent extends StatelessWidget {
   final List listPage;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CustomTextTheme {
-  static double largeSize = 24;
-  static double mediumSize = 20;
-  static double normalSize = 18;
-  static double smallSize = 15;
+  static double largeSize = 22;
+  static double mediumSize = 18;
+  static double normalSize = 16;
+  static double smallSize = 14;
   static double extraSmallSize = 12;
 
   static String font = "IBM Plex Sans Thai";
