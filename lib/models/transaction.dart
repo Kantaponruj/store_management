@@ -1,13 +1,15 @@
 class Transaction {
   final String id;
-  final double amount;
+  final int amount;
   final DateTime date;
+  final double totalPrice;
   final List<TransactionProduct> products;
 
   Transaction({
     required this.id,
     required this.amount,
     required this.date,
+    required this.totalPrice,
     required this.products,
   });
 }
@@ -15,15 +17,15 @@ class Transaction {
 class TransactionProduct {
   String id;
   String name;
-  int quantity;
+  int amount;
   double price;
-  double amount;
+  double totalPrice;
 
   TransactionProduct({
     required this.id,
     required this.name,
-    required this.quantity,
-    required this.price,
     required this.amount,
+    required this.price,
+    required this.totalPrice,
   });
 }

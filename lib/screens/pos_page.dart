@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:store_management/models/transaction.dart';
 import 'package:store_management/screens/components/categories_tab_bar.dart';
-import 'package:store_management/shared/components/color_theme.dart';
-import 'package:store_management/shared/components/text_theme.dart';
+import 'package:store_management/shared/theme/color_theme.dart';
+import 'package:store_management/shared/theme/text_theme.dart';
 
 import '../models/product.dart';
 import '../utils/constant.dart';
@@ -24,37 +24,42 @@ class _POSPageState extends State<POSPage> {
   Widget build(BuildContext context) {
     void onTapAddProduct(Product product) {
       double total = 0.0;
+      int totalAmount = 0;
 
       TransactionProduct item = TransactionProduct(
         id: product.id,
         name: product.name,
         price: product.price,
-        amount: product.price,
-        quantity: 1,
+        amount: 1,
+        totalPrice: product.price,
       );
 
       final duplicateIndex =
           products.indexWhere((element) => element.id == item.id);
 
       if (duplicateIndex != -1) {
-        debugPrint(duplicateIndex.toString());
-        products[duplicateIndex].quantity += 1;
-        final total = products[duplicateIndex].price + product.price;
-        products[duplicateIndex].amount = total;
+        products[duplicateIndex].amount += 1;
+
+        final price = products[duplicateIndex].price;
+        final amount = products[duplicateIndex].amount;
+        final total = price * amount;
+        products[duplicateIndex].totalPrice = total;
       } else {
         products.add(item);
       }
 
       for (int i = 0; i < products.length; i++) {
         final price = products[i].price;
-        final quantity = products[i].quantity;
+        final amount = products[i].amount;
 
-        total += price * quantity;
+        total += price * amount;
+        totalAmount += amount;
       }
 
       transaction = Transaction(
         id: "${products.length}_${DateTime.now()}",
-        amount: total,
+        amount: totalAmount,
+        totalPrice: total,
         date: DateTime.now(),
         products: products,
       );
@@ -173,7 +178,7 @@ class _POSPageState extends State<POSPage> {
                                   visualDensity:
                                       const VisualDensity(vertical: -3),
                                   leading: Text(
-                                      "${products[index].quantity.toString()}x"),
+                                      "${products[index].amount.toString()}x"),
                                   title: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -185,7 +190,7 @@ class _POSPageState extends State<POSPage> {
                                       ),
                                       Row(
                                         children: [
-                                          products[index].quantity > 1
+                                          products[index].amount > 1
                                               ? Padding(
                                                   padding:
                                                       const EdgeInsets.only(
@@ -199,7 +204,9 @@ class _POSPageState extends State<POSPage> {
                                                 )
                                               : const SizedBox.shrink(),
                                           Text(
-                                            products[index].amount.toString(),
+                                            products[index]
+                                                .totalPrice
+                                                .toString(),
                                             style:
                                                 CustomTextTheme.smallBodyMedium,
                                           ),
@@ -216,6 +223,31 @@ class _POSPageState extends State<POSPage> {
                             ),
                           ),
                           Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "รายการทั้งหมด",
+                                  style: CustomTextTheme.bodyMedium,
+                                ),
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    transaction?.amount.toString() ?? "0",
+                                    style: CustomTextTheme.bodyMedium,
+                                  ),
+                                ),
+                                const Text(
+                                  "ชิ้น",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Row(
                               children: [
@@ -227,7 +259,7 @@ class _POSPageState extends State<POSPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 10),
                                   child: Text(
-                                    transaction?.amount.toString() ?? "0",
+                                    transaction?.totalPrice.toString() ?? "0",
                                     style: CustomTextTheme.titleBold.copyWith(
                                       color: ColorTheme.success,
                                     ),

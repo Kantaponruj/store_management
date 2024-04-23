@@ -1,5 +1,15 @@
 import '../models/product.dart';
 
+List<String> categoriesTabs = ["ทั้งหมด", "เครื่องดื่ม", "อาหาร", "อื่น ๆ"];
+List<List<Product>> categoriesContent = [
+  allProducts,
+  drinkProducts,
+  foodProducts,
+  otherProducts
+];
+
+final List<Product> allProducts = drinkProducts + foodProducts + otherProducts;
+
 final List<Product> drinkProducts = [
   Product(id: "drink_0", name: "Berry Smoothie", quantity: 28, price: 30),
   Product(id: "drink_1", name: "Iced Coffee", quantity: 10, price: 50),
