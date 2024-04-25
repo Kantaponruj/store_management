@@ -1,4 +1,5 @@
-class Product {
+class ProductModel {
+  final String category;
   final String id;
   final String name;
   final String? description;
@@ -6,7 +7,8 @@ class Product {
   final int quantity;
   final String? image;
 
-  Product({
+  ProductModel({
+    required this.category,
     required this.id,
     required this.name,
     this.description,

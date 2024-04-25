@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Btn {
   static const String del = "AC";
   static const String clr = "C";
@@ -74,4 +76,28 @@ class Btn {
     del,
     calculate,
   ];
+}
+
+class ButtonProps {
+  String name;
+  IconData? icon;
+  void Function()? onPressed;
+
+  ButtonProps({
+    required this.name,
+    this.icon,
+    this.onPressed,
+  });
+}
+
+class IconButtonProps {
+  String? name;
+  IconData icon;
+  void Function()? onPressed;
+
+  IconButtonProps({
+    this.name,
+    required this.icon,
+    this.onPressed,
+  });
 }

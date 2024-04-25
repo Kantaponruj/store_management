@@ -1,0 +1,30 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "mile-rms",
+          "appId": "1:125073612234:android:fcacfd503ccbe1848e8333",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "mile-rms",
+          "appId": "1:125073612234:ios:966c0620be4c88908e8333",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "mile-rms",
+          "configurations": {
+            "android": "1:125073612234:android:fcacfd503ccbe1848e8333",
+            "ios": "1:125073612234:ios:966c0620be4c88908e8333"
+          }
+        }
+      }
+    }
+  }
+}

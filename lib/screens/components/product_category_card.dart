@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../../shared/components/color_theme.dart';
-import '../../shared/components/text_theme.dart';
+import '../../models/product.dart';
+import '../../shared/theme/color_theme.dart';
+import '../../shared/theme/text_theme.dart';
 
 class ProductCategoryCardComponent extends StatefulWidget {
-  final String productName;
+  final ProductModel product;
   final VoidCallback? onTap;
   // final String productPrice;
   // final String productQuantity;
 
   const ProductCategoryCardComponent({
     super.key,
-    required this.productName,
+    required this.product,
     this.onTap,
     // required this.productPrice,
     // required this.productQuantity,
@@ -36,36 +37,57 @@ class _ProductCategoryCardComponentState
           },
         );
       },
+      borderRadius: BorderRadius.circular(10),
       child: Card(
-        color: ColorTheme.white,
+        color: ColorTheme.background,
         elevation: 1,
-        surfaceTintColor: ColorTheme.white,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(10),
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(10),
+                  ),
                 ),
-                color: ColorTheme.background,
-              ),
-              height: 80,
-              child: const Icon(
-                Icons.local_drink_outlined,
-                size: 40,
-                color: ColorTheme.primary,
+                child: const Icon(
+                  Icons.local_drink_outlined,
+                  size: 40,
+                  color: ColorTheme.primary,
+                ),
               ),
             ),
             Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: FittedBox(
-                child: Text(
-                  widget.productName,
-                  style: CustomTextTheme.bodyMedium,
+              decoration: const BoxDecoration(
+                color: ColorTheme.white,
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(10),
                 ),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FittedBox(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      widget.product.name,
+                      style: CustomTextTheme.bodyMedium,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: FittedBox(
+                      alignment: Alignment.bottomRight,
+                      child: Text(
+                        "฿ ${widget.product.price.toStringAsFixed(2)} บาท",
+                        style: CustomTextTheme.smallBody,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

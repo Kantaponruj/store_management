@@ -15,8 +15,8 @@ class DiaplyProductListComponent extends StatelessWidget {
       child: CustomScrollView(
         slivers: [
           SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 5,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 190,
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
             ),
