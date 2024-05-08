@@ -21,7 +21,7 @@ class CategoryController extends GetxController {
       ProductCategory(id: "1", key: "all", name: "ทั้งหมด"),
       ProductCategory(id: "2", key: "drink", name: "เครื่องดื่ม"),
       ProductCategory(id: "3", key: "snack", name: "ขนม"),
-      ProductCategory(id: "4", key: "other", name: "อื่น ๆ")
+      ProductCategory(id: "4", key: "other", name: "อื่น ๆ"),
     ];
 
     categoryList.addAll(categories);

@@ -36,6 +36,7 @@ class _ModalCreateProductState extends State<ModalCreateProduct> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final navigator = Navigator.of(context);
 
     return Obx(() {
       final categoryList = categoryController.categoryList;
@@ -55,10 +56,12 @@ class _ModalCreateProductState extends State<ModalCreateProduct> {
                       onPrevios: () {
                         productController.isReview.value = false;
                       },
-                      onSubmit: () {
+                      onSubmit: () async {
                         productController
                             .addProduct(productController.product.value);
-                        Navigator.of(context).pop();
+
+                        productController.isReview.value = false;
+                        navigator.pop();
                       },
                     )
                   : Form(
@@ -195,8 +198,9 @@ class _ModalCreateProductState extends State<ModalCreateProduct> {
                                           topic: "ราคา",
                                           maxWidth: 50,
                                           keyboardType: TextInputType.number,
-                                          prefix: Text("฿ ",
-                                              style: CustomTextTheme.bodyBold),
+                                          prefix: const Icon(
+                                            Icons.attach_money_outlined,
+                                          ),
                                         ),
                                       ),
                                     ],

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:store_management/models/product.dart';
 import 'package:store_management/screens/components/product_detail.dart';
 import 'package:store_management/shared/theme/color_theme.dart';
+import 'package:store_management/shared/theme/text_theme.dart';
 
 import '../controllers/category_controller.dart';
 import '../controllers/product_controller.dart';
@@ -65,7 +66,20 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Product Page"),
+        backgroundColor: ColorTheme.primary,
+        foregroundColor: ColorTheme.white,
+        title: Text(
+          "Product Page",
+          style: CustomTextTheme.titleBold,
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              productController.getAllProducts();
+            },
+            icon: const Icon(Icons.autorenew_outlined),
+          ),
+        ],
       ),
       body: Obx(() {
         final productList = productController.productList;

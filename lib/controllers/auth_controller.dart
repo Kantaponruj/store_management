@@ -2,11 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store_management/constants/firebase_auth_constants.dart';
+import 'package:store_management/screens/login_page.dart';
 import 'package:store_management/screens/main_page.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
   late Rx<User?> firebaseUser;
+
+  RxBool isLoadingLogin = false.obs;
 
   // late Rx<GoogleSignInAccount?> googleSignInAccount;
 
@@ -29,7 +32,7 @@ class AuthController extends GetxController {
   _setInitialScreen(User? user) {
     if (user == null) {
       // if the user is not found then the user is navigated to the Register Screen
-      Get.offAll(() => const MainPage());
+      Get.offAll(() => const LoginPage());
     } else {
       // if the user exists and logged in the the user is navigated to the Home Screen
       Get.offAll(() => const MainPage());
@@ -85,13 +88,21 @@ class AuthController extends GetxController {
 
   void login(String email, password) async {
     try {
+      isLoadingLogin.value = true;
       await auth.signInWithEmailAndPassword(email: email, password: password);
     } catch (firebaseAuthException) {
       debugPrint(firebaseAuthException.toString());
+    } finally {
+      isLoadingLogin.value = false;
     }
   }
 
   void signOut() async {
     await auth.signOut();
+  }
+
+  void updateProfile(String name, {String? photoURL}) async {
+    await auth.currentUser!.updateDisplayName(name);
+    await auth.currentUser!.updatePhotoURL(photoURL);
   }
 }

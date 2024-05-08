@@ -29,13 +29,20 @@ class TransactionController extends GetxController {
     }
   }
 
-  deleteTransactionProduct() {
+  deleteTransactionProduct(String productId) {
+    final list = transactionProducts;
+
+    final index = list.indexWhere((element) => element.id == productId);
+    list.removeAt(index);
+  }
+
+  clearTransaction() {
     final list = transactionProducts;
 
     list.clear();
   }
 
-  addTransaction(Transaction transaction) {
-    transactionList.add(transaction);
+  addTransaction(TransactionProduct transaction) {
+    transactionProducts.add(transaction);
   }
 }

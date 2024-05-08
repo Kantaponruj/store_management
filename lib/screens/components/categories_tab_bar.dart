@@ -26,22 +26,22 @@ class CategoriesTabBarComponent extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
+          Container(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
                   child: Text(
                     "สินค้าทั้งหมด",
                     style: CustomTextTheme.subtitleBold,
                   ),
                 ),
-              ),
-              Row(
-                children: titleActions ?? [],
-              )
-            ],
+                Row(
+                  children: titleActions ?? [],
+                )
+              ],
+            ),
           ),
           Row(
             children: [
@@ -56,6 +56,7 @@ class CategoriesTabBarComponent extends StatelessWidget {
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(20)),
                   ),
+                  indicatorPadding: const EdgeInsets.all(0),
                   automaticIndicatorColorAdjustment: false,
                   overlayColor: MaterialStateProperty.all(Colors.transparent),
                   labelStyle: CustomTextTheme.subtitleBold,

@@ -16,25 +16,33 @@ class CustomTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: Text(
-            props.topic,
-            style: CustomTextTheme.bodyMedium,
-          ),
-        ),
+        props.topic != ""
+            ? Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Text(
+                  "${props.topic}:",
+                  style: CustomTextTheme.bodyMedium,
+                ),
+              )
+            : const SizedBox.shrink(),
         TextFormField(
           controller: props.controller,
           style: CustomTextTheme.body,
+          obscureText: props.type == TextFieldType.password,
           keyboardType: props.keyboardType,
           maxLines: props.maxLines,
           maxLength: props.maxLength,
           decoration: InputDecoration(
             contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            suffix: props.suffix,
-            prefix: props.prefix,
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            suffixIcon: props.suffix,
+            prefixIcon: props.prefix,
+            hintText: props.hintText,
+            helperText: props.helperText,
+            errorText: props.errorText,
           ),
+          validator: props.validator,
+          textInputAction: props.textInputAction,
           enabled: props.enabled,
           cursorColor: ColorTheme.primary,
           onChanged: (value) {},
@@ -47,8 +55,11 @@ class CustomTextField extends StatelessWidget {
   }
 }
 
+enum TextFieldType { text, password }
+
 class CustomTextFieldProps {
   final String topic;
+  final TextFieldType type;
   final TextEditingController? controller;
   final int maxLines;
   final TextInputType? keyboardType;
@@ -58,9 +69,15 @@ class CustomTextFieldProps {
   final Widget? prefix;
   final Widget? suffix;
   final bool enabled;
+  final String? hintText;
+  final String? helperText;
+  final String? Function(String?)? validator;
+  final TextInputAction? textInputAction;
+  final String? errorText;
 
   const CustomTextFieldProps({
     required this.topic,
+    this.type = TextFieldType.text,
     this.controller,
     this.maxLines = 1,
     this.keyboardType,
@@ -70,6 +87,11 @@ class CustomTextFieldProps {
     this.suffix,
     this.prefix,
     this.enabled = true,
+    this.hintText,
+    this.helperText,
+    this.validator,
+    this.textInputAction,
+    this.errorText,
   });
 }
 
@@ -80,6 +102,7 @@ class CustomDropdownField extends StatelessWidget {
   final int? maxLength;
   final double minWidth;
   final double? maxWidth;
+  final String? hintText;
 
   const CustomDropdownField({
     super.key,
@@ -89,6 +112,7 @@ class CustomDropdownField extends StatelessWidget {
     this.minWidth = 300,
     this.maxWidth,
     this.onChanged,
+    this.hintText,
   });
 
   @override
@@ -96,19 +120,24 @@ class CustomDropdownField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: Text(
-            topic,
-            style: CustomTextTheme.bodyMedium,
-          ),
-        ),
+        topic != ""
+            ? Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Text(
+                  topic,
+                  style: CustomTextTheme.bodyMedium,
+                ),
+              )
+            : const SizedBox.shrink(),
         DropdownButtonFormField(
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           ),
           dropdownColor: ColorTheme.white,
           onChanged: onChanged,
+          hint: Text(
+            hintText ?? "",
+          ),
           items: items
               .map((e) => DropdownMenuItem(
                   value: e.value,

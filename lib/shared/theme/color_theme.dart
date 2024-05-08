@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class ColorTheme {
   static const Color primary = Color(0xFF034C8C);
-  static const Color secondary = Color(0xFF82C0D9);
+  static const Color secondary = Color(0xFF1343FF);
   static const Color background = Color(0xFFF2F2F2);
 
-  static const Color success = Color(0xFF41A447);
+  static const Color success = Color(0xFF67B66C);
   static const Color error = Color(0xFFE74747);
   static const Color warning = Color(0xFFFFB828);
 

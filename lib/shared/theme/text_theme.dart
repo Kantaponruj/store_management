@@ -15,6 +15,12 @@ class CustomTextTheme {
     fontFamily: font,
   );
 
+  static TextStyle titleMedium = TextStyle(
+    fontSize: largeSize,
+    fontWeight: FontWeight.w500,
+    fontFamily: font,
+  );
+
   static TextStyle titleBold = TextStyle(
     fontSize: largeSize,
     fontWeight: FontWeight.bold,
@@ -79,5 +85,23 @@ class CustomTextTheme {
     fontSize: extraSmallSize,
     fontWeight: FontWeight.bold,
     fontFamily: font,
+  );
+}
+
+class CustomText {
+  final String text;
+  final TextStyle? style;
+
+  CustomText({required this.text, this.style});
+}
+
+Widget buildFittedText({
+  required CustomText textObject,
+}) {
+  return FittedBox(
+    child: Text(
+      textObject.text,
+      style: textObject.style ?? CustomTextTheme.body,
+    ),
   );
 }

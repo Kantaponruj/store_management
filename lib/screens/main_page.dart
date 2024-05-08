@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:store_management/screens/home_page.dart';
 import 'package:store_management/screens/manual_pos_page.dart';
 import 'package:store_management/screens/pos_page.dart';
@@ -17,16 +18,15 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-    DateFormat formatter =
-        DateFormat('สวัสดี.......วันที่ dd เดือน MMM ปี yyyy');
-    String dateNow = formatter.format(now);
+    final context = Get.context!;
+    final settings = GetStorage("Settings");
+
+    settings.write('isPhone', context.isPhone);
 
     final List listPage = [
       {
         "icon": Icons.store,
         "menuName": "POS",
-        "title": dateNow,
         "page": const POSPage(),
       },
       {
@@ -42,6 +42,7 @@ class _MainPageState extends State<MainPage> {
     ];
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: listPage[selectedIndex]['page'],
       ),
