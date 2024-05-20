@@ -6,13 +6,13 @@ import 'package:store_management/shared/theme/text_theme.dart';
 enum CustomSnackbarStatus { success, error, info }
 
 Color getSnackbarColor(CustomSnackbarStatus status, {double opacity = 0.2}) {
-  double thisOpacity = opacity > 1 ? 1 : opacity;
+  // double thisOpacity = opacity > 1 ? 1 : opacity;
 
   switch (status) {
     case CustomSnackbarStatus.success:
-      return ColorTheme.success.withOpacity(thisOpacity);
+      return ColorTheme.white;
     case CustomSnackbarStatus.error:
-      return ColorTheme.error.withOpacity(thisOpacity);
+      return ColorTheme.white;
     case CustomSnackbarStatus.info:
       return ColorTheme.disabled.withOpacity(0.5);
   }
@@ -21,9 +21,9 @@ Color getSnackbarColor(CustomSnackbarStatus status, {double opacity = 0.2}) {
 Color getTextColor(CustomSnackbarStatus status) {
   switch (status) {
     case CustomSnackbarStatus.success:
-      return ColorTheme.black;
+      return ColorTheme.success;
     case CustomSnackbarStatus.error:
-      return ColorTheme.white;
+      return ColorTheme.error;
     case CustomSnackbarStatus.info:
       return ColorTheme.primary;
   }
@@ -44,7 +44,6 @@ SnackbarController displaySnackbar({
         color: getTextColor(status),
       ),
     ),
-    barBlur: 10,
     messageText: Text(
       content,
       style: CustomTextTheme.subtitle.copyWith(

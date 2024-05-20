@@ -39,7 +39,8 @@ class _ProductCategoryCardComponentState
       },
       borderRadius: BorderRadius.circular(10),
       child: Card(
-        color: ColorTheme.background,
+        color: ColorTheme.secondary,
+        surfaceTintColor: Colors.transparent,
         elevation: 1,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -55,7 +56,7 @@ class _ProductCategoryCardComponentState
                 child: const Icon(
                   Icons.local_drink_outlined,
                   size: 40,
-                  color: ColorTheme.primary,
+                  color: ColorTheme.white,
                 ),
               ),
             ),

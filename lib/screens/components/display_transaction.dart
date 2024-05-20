@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store_management/models/components.dart';
 import 'package:store_management/models/transaction.dart';
+import 'package:store_management/screens/components/custom_button.dart';
 import 'package:store_management/shared/theme/color_theme.dart';
 import 'package:store_management/shared/theme/text_theme.dart';
 
@@ -164,24 +165,10 @@ class DisplayTransaction extends StatelessWidget {
             ),
           ),
           customButtonProps != null
-              ? InkWell(
-                  onTap: customButtonProps!.onTap,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: const Color(0xff034C8C),
-                    ),
-                    alignment: Alignment.center,
-                    height: 60,
-                    child: Text(
-                      customButtonProps?.text ?? "",
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+              ? CustomButton(
+                  buttonName: customButtonProps?.text ?? "",
+                  onPressed: customButtonProps!.onTap,
+                  height: 60,
                 )
               : const SizedBox.shrink(),
         ],

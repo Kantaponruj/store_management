@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:store_management/controllers/category_controller.dart';
 
 import '../../shared/theme/color_theme.dart';
 import '../../shared/theme/text_theme.dart';
 
-class CategoriesTabBarComponent extends StatelessWidget {
+class CategoriesTabBarComponent extends GetView<CategoryController> {
   final List<String> categories;
   final List<Widget> tabBarView;
   final List<Widget>? titleActions;
@@ -43,38 +45,54 @@ class CategoriesTabBarComponent extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            children: [
-              Expanded(
-                child: TabBar(
-                  padding: const EdgeInsets.only(left: 20),
-                  tabAlignment: TabAlignment.start,
-                  isScrollable: true,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  indicator: const UnderlineTabIndicator(
-                    borderSide: BorderSide.none,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20)),
-                  ),
-                  indicatorPadding: const EdgeInsets.all(0),
-                  automaticIndicatorColorAdjustment: false,
-                  overlayColor: MaterialStateProperty.all(Colors.transparent),
-                  labelStyle: CustomTextTheme.subtitleBold,
-                  labelColor: ColorTheme.primary,
-                  unselectedLabelColor: ColorTheme.black,
-                  unselectedLabelStyle: CustomTextTheme.body,
-                  dividerHeight: 0,
-                  tabs: categories.map((e) => Tab(text: e)).toList(),
-                ),
-              ),
-              Row(
-                children: tabActions ?? [],
-              )
-            ],
-          ),
           Expanded(
-            child: TabBarView(children: tabBarView),
-          )
+            child: controller.obx(
+              (state) => Column(
+                mainAxisAlignment: state != null
+                    ? MainAxisAlignment.start
+                    : MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TabBar(
+                          padding: const EdgeInsets.only(left: 20),
+                          tabAlignment: TabAlignment.start,
+                          isScrollable: true,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          indicator: const UnderlineTabIndicator(
+                            borderSide: BorderSide.none,
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(20)),
+                          ),
+                          indicatorPadding: const EdgeInsets.all(0),
+                          automaticIndicatorColorAdjustment: false,
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          labelStyle: CustomTextTheme.subtitleBold,
+                          labelColor: ColorTheme.primary,
+                          unselectedLabelColor: ColorTheme.black,
+                          unselectedLabelStyle: CustomTextTheme.body,
+                          dividerHeight: 0,
+                          tabs: categories.map((e) => Tab(text: e)).toList(),
+                        ),
+                      ),
+                      Row(
+                        children: tabActions ?? [],
+                      )
+                    ],
+                  ),
+                  Expanded(
+                    child: TabBarView(children: tabBarView),
+                  )
+                ],
+              ),
+              onEmpty: const SizedBox.shrink(),
+              onLoading: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          ),
         ],
       ),
     );

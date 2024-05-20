@@ -27,23 +27,35 @@ class ProductController extends GetxController with StateMixin {
 
     change(null, status: RxStatus.loading());
 
-    Future.delayed(const Duration(seconds: 3), () async {
+    Future.delayed(const Duration(seconds: 1), () async {
       await fetchData();
-
-      change(productList, status: RxStatus.success());
     });
   }
 
   fetchData() async {
     final storedString = box.read('products');
-    final jsonData = jsonDecode(storedString) as List;
-    productList.value =
-        jsonData.map((product) => ProductModel.fromJson(product)).toList();
+    if (storedString != null) {
+      final jsonData = jsonDecode(storedString) as List;
+
+      if (jsonData.isNotEmpty) {
+        debugPrint("Products: $jsonData");
+        productList.value =
+            jsonData.map((product) => ProductModel.fromJson(product)).toList();
+        change(productList, status: RxStatus.success());
+      } else {
+        change(productList, status: RxStatus.empty());
+      }
+    } else {
+      debugPrint("Empty");
+      change(productList, status: RxStatus.empty());
+    }
   }
 
   getAllProducts() async {
+    change(null, status: RxStatus.loading());
     final listFromFirestore = FirestoreDb.productStream();
     productList.bindStream(listFromFirestore);
+    productList.refresh();
 
     if (productList.isNotEmpty) {
       var productsAsMap =
@@ -53,6 +65,10 @@ class ProductController extends GetxController with StateMixin {
 
       final storedString = box.read('products');
       debugPrint('Stored product: $storedString');
+      await fetchData();
+      change(productList, status: RxStatus.success());
+    } else {
+      change(productList, status: RxStatus.empty());
     }
   }
 

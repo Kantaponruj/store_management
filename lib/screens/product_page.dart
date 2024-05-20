@@ -11,7 +11,6 @@ import '../controllers/product_controller.dart';
 import 'components/categories_tab_bar.dart';
 import 'components/custom_button.dart';
 import 'components/display_product.dart';
-import 'components/modal_create_product.dart';
 import 'components/product_category_card.dart';
 
 class ProductPage extends StatefulWidget {
@@ -53,15 +52,6 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  void showModalCreateProduct() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const ModalCreateProduct();
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +59,7 @@ class _ProductPageState extends State<ProductPage> {
         backgroundColor: ColorTheme.primary,
         foregroundColor: ColorTheme.white,
         title: Text(
-          "Product Page",
+          "รายการสินค้า",
           style: CustomTextTheme.titleBold,
         ),
         actions: [
@@ -87,7 +77,7 @@ class _ProductPageState extends State<ProductPage> {
 
         return SafeArea(
           child: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(10),
             child: Column(
               children: [
                 Expanded(
@@ -119,13 +109,15 @@ class _ProductPageState extends State<ProductPage> {
                         buttonName: "เพิ่มสินค้า",
                         icon: Icons.add,
                         onPressed: () {
-                          showModalCreateProduct();
+                          Get.toNamed("/create-product");
                         },
                       ),
                     ],
                     tabActions: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.toNamed('/category');
+                        },
                         icon: const Icon(Icons.edit, color: Colors.grey),
                       )
                     ],
@@ -136,6 +128,22 @@ class _ProductPageState extends State<ProductPage> {
           ),
         );
       }),
+    );
+  }
+
+  void showModalEditCategory() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return modalCreateCategory();
+      },
+    );
+  }
+
+  Widget modalCreateCategory() {
+    return AlertDialog(
+      title: Text("แก้ไขหมวดหมู่", style: CustomTextTheme.titleBold),
+      content: const Text("Edit Category"),
     );
   }
 }

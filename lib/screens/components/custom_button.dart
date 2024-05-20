@@ -5,13 +5,14 @@ import '../../shared/theme/color_theme.dart';
 
 enum ButtonType { primary, secondary }
 
-enum ButtonStatus { primary, disabled, error, success }
+enum ButtonStatus { primary, secondary, disabled, error, success }
 
 class CustomButton extends StatelessWidget {
   final String buttonName;
   final IconData? icon;
   final void Function()? onPressed;
   final double? width;
+  final double? height;
   final EdgeInsets? margin;
   final ButtonType type;
   final ButtonStatus status;
@@ -23,6 +24,7 @@ class CustomButton extends StatelessWidget {
     this.icon,
     required this.onPressed,
     this.width,
+    this.height,
     this.margin,
     this.type = ButtonType.primary,
     this.status = ButtonStatus.primary,
@@ -34,6 +36,9 @@ class CustomButton extends StatelessWidget {
     Color buttonColor = ColorTheme.primary;
 
     switch (status) {
+      case ButtonStatus.secondary:
+        buttonColor = ColorTheme.secondary;
+        break;
       case ButtonStatus.error:
         buttonColor = ColorTheme.error;
         break;
@@ -48,6 +53,7 @@ class CustomButton extends StatelessWidget {
       margin: margin,
       constraints: BoxConstraints(
         maxWidth: width ?? double.infinity,
+        minHeight: height ?? 10,
       ),
       child: ElevatedButton(
         style: type == ButtonType.primary
@@ -62,9 +68,10 @@ class CustomButton extends StatelessWidget {
               )
             : ElevatedButton.styleFrom(
                 foregroundColor: buttonColor,
-                backgroundColor: ColorTheme.white,
+                backgroundColor: Colors.transparent,
                 surfaceTintColor: Colors.transparent,
                 side: BorderSide(width: 2, color: buttonColor),
+                shadowColor: Colors.transparent,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -72,27 +79,27 @@ class CustomButton extends StatelessWidget {
         onPressed: isLoading ? null : onPressed,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 15),
-          child: isLoading
-              ? const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(),
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    icon != null
-                        ? Icon(icon, color: ColorTheme.white)
-                        : const SizedBox.shrink(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: isLoading
+                ? [
+                    const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(),
+                    )
+                  ]
+                : [
+                    icon != null ? Icon(icon) : const SizedBox.shrink(),
                     Container(
                       padding: EdgeInsets.only(left: icon != null ? 10 : 0),
                       child: Text(
                         buttonName,
-                        style: CustomTextTheme.bodyMedium,
+                        style: CustomTextTheme.subtitleBold,
                       ),
                     ),
                   ],
-                ),
+          ),
         ),
       ),
     );

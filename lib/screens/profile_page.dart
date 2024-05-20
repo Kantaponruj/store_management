@@ -53,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: ColorTheme.white,
+                    color: ColorTheme.background,
                   ),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -72,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Stack(
                             children: [
                               const CircleAvatar(
-                                backgroundColor: ColorTheme.background,
+                                backgroundColor: ColorTheme.white,
                                 // foregroundImage: NetworkImage(
                                 //   "https://avatars.githubusercontent.com/u/102711774?v=4",
                                 // ),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:store_management/constants/firebase_auth_constants.dart';
+import 'package:store_management/models/category.dart';
 import 'package:store_management/models/product.dart';
 
 class FirestoreDb {
@@ -51,6 +52,40 @@ class FirestoreDb {
         products.add(productModel);
       }
       return products;
+    });
+  }
+
+  static addCategory(ProductCategory category) async {
+    await firebaseFirestore
+        .collection('user')
+        .doc(auth.currentUser!.uid)
+        .collection('categories')
+        .add({
+      'id': category.id,
+      'key': category.key,
+      'name': category.name,
+      'description': category.description,
+      'icon': category.icon,
+      'image': category.image,
+      'color': category.color,
+      'created_at': Timestamp.now(),
+    });
+  }
+
+  static Stream<List<ProductCategory>> categoryStream() {
+    return firebaseFirestore
+        .collection('user')
+        .doc(auth.currentUser!.uid)
+        .collection('categories')
+        .snapshots()
+        .map((QuerySnapshot query) {
+      List<ProductCategory> categories = [];
+      for (var documentSnapshot in query.docs) {
+        final categoryModel = ProductCategory.fromDocumentSnapshot(
+            documentSnapshot: documentSnapshot);
+        categories.add(categoryModel);
+      }
+      return categories;
     });
   }
 

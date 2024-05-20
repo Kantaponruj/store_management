@@ -19,13 +19,29 @@ class CustomTextField extends StatelessWidget {
         props.topic != ""
             ? Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: Text(
-                  "${props.topic}:",
-                  style: CustomTextTheme.bodyMedium,
+                child: Row(
+                  children: [
+                    props.isRequired
+                        ? Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: Text(
+                              "*",
+                              style: CustomTextTheme.bodyMedium.copyWith(
+                                color: ColorTheme.error,
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                    Text(
+                      "${props.topic}:",
+                      style: CustomTextTheme.bodyMedium,
+                    ),
+                  ],
                 ),
               )
             : const SizedBox.shrink(),
         TextFormField(
+          key: props.key,
           controller: props.controller,
           style: CustomTextTheme.body,
           obscureText: props.type == TextFieldType.password,
@@ -35,8 +51,8 @@ class CustomTextField extends StatelessWidget {
           decoration: InputDecoration(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            suffixIcon: props.suffix,
-            prefixIcon: props.prefix,
+            suffixIcon: props.suffixIcon,
+            prefixIcon: props.prefixIcon,
             hintText: props.hintText,
             helperText: props.helperText,
             errorText: props.errorText,
@@ -45,7 +61,7 @@ class CustomTextField extends StatelessWidget {
           textInputAction: props.textInputAction,
           enabled: props.enabled,
           cursorColor: ColorTheme.primary,
-          onChanged: (value) {},
+          onChanged: props.onChanged,
           onTapOutside: (event) {
             FocusManager.instance.primaryFocus?.unfocus();
           },
@@ -58,6 +74,8 @@ class CustomTextField extends StatelessWidget {
 enum TextFieldType { text, password }
 
 class CustomTextFieldProps {
+  final bool isRequired;
+  final GlobalKey<FormFieldState<dynamic>>? key;
   final String topic;
   final TextFieldType type;
   final TextEditingController? controller;
@@ -66,16 +84,19 @@ class CustomTextFieldProps {
   final int? maxLength;
   final double minWidth;
   final double? maxWidth;
-  final Widget? prefix;
-  final Widget? suffix;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final bool enabled;
   final String? hintText;
   final String? helperText;
   final String? Function(String?)? validator;
   final TextInputAction? textInputAction;
   final String? errorText;
+  final void Function(String)? onChanged;
 
   const CustomTextFieldProps({
+    this.isRequired = false,
+    this.key,
     required this.topic,
     this.type = TextFieldType.text,
     this.controller,
@@ -84,18 +105,20 @@ class CustomTextFieldProps {
     this.maxLength,
     this.minWidth = 300,
     this.maxWidth,
-    this.suffix,
-    this.prefix,
+    this.suffixIcon,
+    this.prefixIcon,
     this.enabled = true,
     this.hintText,
     this.helperText,
     this.validator,
     this.textInputAction,
     this.errorText,
+    this.onChanged,
   });
 }
 
 class CustomDropdownField extends StatelessWidget {
+  final bool isRequired;
   final String topic;
   final void Function(dynamic)? onChanged;
   final List<CustomDropdownItem> items;
@@ -103,9 +126,11 @@ class CustomDropdownField extends StatelessWidget {
   final double minWidth;
   final double? maxWidth;
   final String? hintText;
+  final String? Function(String?)? validator;
 
   const CustomDropdownField({
     super.key,
+    this.isRequired = false,
     required this.topic,
     required this.items,
     this.maxLength,
@@ -113,6 +138,7 @@ class CustomDropdownField extends StatelessWidget {
     this.maxWidth,
     this.onChanged,
     this.hintText,
+    this.validator,
   });
 
   @override
@@ -123,9 +149,24 @@ class CustomDropdownField extends StatelessWidget {
         topic != ""
             ? Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: Text(
-                  topic,
-                  style: CustomTextTheme.bodyMedium,
+                child: Row(
+                  children: [
+                    isRequired
+                        ? Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: Text(
+                              "*",
+                              style: CustomTextTheme.bodyMedium.copyWith(
+                                color: ColorTheme.error,
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                    Text(
+                      topic,
+                      style: CustomTextTheme.bodyMedium,
+                    ),
+                  ],
                 ),
               )
             : const SizedBox.shrink(),
@@ -146,6 +187,7 @@ class CustomDropdownField extends StatelessWidget {
                     style: CustomTextTheme.body,
                   )))
               .toList(),
+          validator: validator,
         ),
       ],
     );
@@ -157,4 +199,14 @@ class CustomDropdownItem {
   final String value;
 
   const CustomDropdownItem({required this.title, required this.value});
+}
+
+class CustomSuffixButton {
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const CustomSuffixButton({
+    required this.icon,
+    required this.onTap,
+  });
 }

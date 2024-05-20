@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:store_management/screens/category_page.dart';
+import 'package:store_management/screens/create_product_page.dart';
 import 'package:store_management/screens/home_page.dart';
 import 'package:store_management/screens/main_page.dart';
 import 'package:store_management/screens/payment_page.dart';
@@ -34,6 +36,14 @@ appRoutes() => [
       GetPage(
         name: '/profile',
         page: () => const ProfilePage(),
+      ),
+      GetPage(
+        name: '/create-product',
+        page: () => const CreateProductPage(),
+      ),
+      GetPage(
+        name: '/category',
+        page: () => const CategoryPage(),
       )
     ];
 

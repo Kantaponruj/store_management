@@ -18,7 +18,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  final _emailKey = GlobalKey<FormFieldState>();
+  final _passwordKey = GlobalKey<FormFieldState>();
 
   @override
   void dispose() {
@@ -30,133 +31,217 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final context = Get.context!;
-
     final size = MediaQuery.of(context).size;
-
-    bool isValidate = _formKey.currentState?.validate() ?? false;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: ColorTheme.background,
       body: SafeArea(
         child: Center(
-          child: SingleChildScrollView(
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              surfaceTintColor: Colors.transparent,
-              margin: const EdgeInsets.all(20),
-              child: Form(
-                key: _formKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                onChanged: () {
-                  setState(() {});
-                  debugPrint("isValidate: $isValidate");
-                },
-                child: Container(
-                  width: context.isPhone ? size.width : size.width * 0.4,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
+          child: context.isPhone
+              ? SingleChildScrollView(
+                  child: ListView(
+                    shrinkWrap: true,
+                    // crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      /// Save login data into get storage
-                      SizedBox(
-                        height: 200,
-                        child: SvgPicture.asset("assets/images/svg/login.svg"),
-                      ),
-                      const SizedBox(height: 20),
                       Container(
-                        margin: const EdgeInsets.symmetric(vertical: 20),
-                        alignment: Alignment.center,
-                        child: Text("เข้าสู่ระบบ",
-                            style: CustomTextTheme.titleBold.copyWith(
-                              color: ColorTheme.primary,
-                            )),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "เข้าสู่ระบบด้วยอีเมลและรหัสผ่าน",
-                          style: CustomTextTheme.subtitle,
+                        color: ColorTheme.white,
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: appLogo(),
+                            ),
+                            imageSection(size.width * 0.6),
+                          ],
                         ),
                       ),
-                      CustomTextField(
-                        props: CustomTextFieldProps(
-                          topic: "อีเมล",
-                          controller: _emailController,
-                          hintText: "กรุณาใส่อีเมลร้านค้า",
-                          textInputAction: TextInputAction.next,
-                          validator: Validators.compose([
-                            Validators.required("กรุณาใส่อีเมลร้านค้า"),
-                            Validators.email("กรุณาใส่อีเมลร้านค้าให้ถูกต้อง"),
-                          ]),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        child: CustomTextField(
-                          props: CustomTextFieldProps(
-                            topic: "รหัสผ่าน",
-                            controller: _passwordController,
-                            hintText: "กรุณาใส่รหัสผ่านร้านค้า",
-                            type: TextFieldType.password,
-                            textInputAction: TextInputAction.done,
-                            validator: Validators.compose([
-                              Validators.required("กรุณาใส่รหัสผ่านร้านค้า"),
-                              Validators.minLength(
-                                6,
-                                "กรุณาใส่รหัสผ่านร้านค้าให้มากกว่า 6 ตัวอักษร",
-                              ),
-                            ]),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      CustomButton(
-                        isLoading: authController.isLoadingLogin.value,
-                        buttonName: "เข้าสู่ระบบ",
-                        onPressed: isValidate
-                            ? () async {
-                                bool validate =
-                                    _formKey.currentState!.validate();
-
-                                String email = _emailController.text.trim();
-                                String password =
-                                    _passwordController.text.trim();
-
-                                debugPrint(
-                                    "email: $email, password: $password");
-
-                                setState(() {});
-
-                                if (validate == true) {
-                                  authController.login(email, password);
-                                }
-                              }
-                            : null,
-                        icon: Icons.login_rounded,
-                      ),
-                      // ElevatedButton(
-                      //   style: ElevatedButton.styleFrom(
-                      //     backgroundColor: Colors.red,
-                      //   ),
-                      //   onPressed: () {
-                      //     authController.signInWithGoogle();
-                      //   },
-                      //   child: const Text("Sign In with Google"),
-                      // ),
+                      loginFormSection(),
                     ],
                   ),
+                )
+              : Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        color: ColorTheme.white,
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            appLogo(),
+                            Expanded(
+                              child: imageSection(size.height * 0.4),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Container(
+                          child: loginFormSection(),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              ),
+        ),
+      ),
+    );
+  }
+
+  Widget appLogo() {
+    return Row(
+      children: [
+        Container(
+          width: context.isPhone ? 60 : 80,
+          padding: const EdgeInsets.only(right: 10),
+          child: Image.asset(
+            "assets/images/logo.png",
+          ),
+        ),
+        Text(
+          "Mile RMS",
+          style: CustomTextTheme.titleBold.copyWith(
+            fontSize: context.isPhone ? 20 : 30,
+            color: ColorTheme.primary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget imageSection(double height) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: height,
+          child: FittedBox(
+            fit: BoxFit.fitHeight,
+            child: SvgPicture.asset(
+              "assets/images/svg/login.svg",
             ),
           ),
         ),
+      ],
+    );
+  }
+
+  Widget loginFormSection() {
+    final size = MediaQuery.of(context).size;
+
+    return Container(
+      width: context.isPhone ? size.width : size.width * 0.4,
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: context.isPhone
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: context.isPhone ? 10 : 20),
+            alignment: Alignment.centerLeft,
+            child: Text("เข้าสู่ระบบ",
+                style: CustomTextTheme.titleBold.copyWith(
+                  fontSize: context.isPhone ? null : 30,
+                  color: ColorTheme.primary,
+                )),
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 20),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "เข้าสู่ระบบด้วยอีเมลและรหัสผ่าน",
+              style: CustomTextTheme.subtitle,
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                CustomTextField(
+                  props: CustomTextFieldProps(
+                    key: _emailKey,
+                    topic: "อีเมล",
+                    controller: _emailController,
+                    hintText: "กรุณาใส่อีเมลร้านค้า",
+                    textInputAction: TextInputAction.next,
+                    onChanged: (v) {
+                      _emailKey.currentState!.validate();
+                      setState(() {});
+                    },
+                    validator: Validators.compose([
+                      Validators.required("กรุณาใส่อีเมลร้านค้า"),
+                      Validators.email("กรุณาใส่อีเมลร้านค้าให้ถูกต้อง"),
+                    ]),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: CustomTextField(
+                    props: CustomTextFieldProps(
+                      key: _passwordKey,
+                      topic: "รหัสผ่าน",
+                      controller: _passwordController,
+                      hintText: "กรุณาใส่รหัสผ่านร้านค้า",
+                      type: TextFieldType.password,
+                      textInputAction: TextInputAction.done,
+                      onChanged: (v) {
+                        _passwordKey.currentState!.validate();
+                        setState(() {});
+                      },
+                      validator: Validators.compose([
+                        Validators.required("กรุณาใส่รหัสผ่านร้านค้า"),
+                        Validators.minLength(
+                          6,
+                          "กรุณาใส่รหัสผ่านร้านค้าให้มากกว่า 6 ตัวอักษร",
+                        ),
+                      ]),
+                    ),
+                  ),
+                ),
+                SizedBox(height: context.isPhone ? 10 : 30),
+                CustomButton(
+                  isLoading: authController.isLoadingLogin.value,
+                  buttonName: "เข้าสู่ระบบ",
+                  onPressed: () async {
+                    FocusScope.of(context).unfocus();
+
+                    bool validate = _emailKey.currentState!.validate() &&
+                        _passwordKey.currentState!.validate();
+
+                    String email = _emailController.text.trim();
+                    String password = _passwordController.text.trim();
+
+                    debugPrint("email: $email, password: $password");
+
+                    setState(() {});
+
+                    if (validate == true) {
+                      authController.login(email, password);
+                    }
+                  },
+                  icon: Icons.login_rounded,
+                ),
+              ],
+            ),
+          ),
+          // ElevatedButton(
+          //   style: ElevatedButton.styleFrom(
+          //     backgroundColor: Colors.red,
+          //   ),
+          //   onPressed: () {
+          //     authController.signInWithGoogle();
+          //   },
+          //   child: const Text("Sign In with Google"),
+          // ),
+        ],
       ),
     );
   }

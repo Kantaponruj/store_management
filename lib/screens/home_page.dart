@@ -15,6 +15,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final authController = Get.put(AuthController());
+
+  late final firebaseUser = authController.firebaseUser.value;
+  late final userEmail = firebaseUser!.email ?? "Guest";
+  late final String userName = firebaseUser != null &&
+          firebaseUser!.displayName != "" &&
+          firebaseUser!.displayName != null
+      ? firebaseUser!.displayName!
+      : userEmail;
+
   @override
   Widget build(BuildContext context) {
     List<CustomMenuItem> menuItems = [
@@ -30,80 +40,7 @@ class _HomePageState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Container(
-          color: ColorTheme.primary,
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-          child: GetX<AuthController>(
-            init: AuthController(),
-            builder: (controller) {
-              final firebaseUser = controller.firebaseUser.value;
-              final userEmail = firebaseUser!.email ?? "Guest";
-              final String userName = firebaseUser.displayName != "" &&
-                      firebaseUser.displayName != null
-                  ? firebaseUser.displayName!
-                  : userEmail;
-
-              return ListTile(
-                title: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: ColorTheme.background,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(right: 20),
-                            child: const CircleAvatar(
-                              maxRadius: 40,
-                              backgroundColor: ColorTheme.primary,
-                              foregroundColor: ColorTheme.white,
-                              child: Icon(Icons.person_rounded),
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("สวัสดี, ",
-                                  style: CustomTextTheme.titleBold),
-                              Text(
-                                userName,
-                                style: CustomTextTheme.body,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.all(10),
-                        child: IconButton(
-                          color: ColorTheme.black,
-                          onPressed: () {
-                            Get.toNamed('/profile');
-                          },
-                          icon: const Icon(Icons.settings_rounded, size: 30),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.logout_rounded, size: 30),
-                  color: ColorTheme.white,
-                  onPressed: () {
-                    controller.signOut();
-                  },
-                ),
-              );
-            },
-          ),
-        ),
+        profileSection(),
         Container(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -132,6 +69,101 @@ class _HomePageState extends State<HomePage> {
         ),
       ],
     );
+  }
+
+  Widget profileSection() {
+    return context.isPhone
+        ? Container(
+            color: ColorTheme.primary,
+            alignment: Alignment.topLeft,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: ListTile(
+              title: Text("สวัสดี, ", style: CustomTextTheme.titleBold),
+              subtitle: Text(userName, style: CustomTextTheme.subtitle),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    color: ColorTheme.black,
+                    onPressed: () {
+                      Get.toNamed('/profile');
+                    },
+                    icon: const Icon(Icons.settings_rounded, size: 30),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.logout_rounded, size: 30),
+                    color: ColorTheme.white,
+                    onPressed: () {
+                      Get.offAllNamed('/login');
+                      authController.signOut();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          )
+        : Container(
+            color: ColorTheme.primary,
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+            child: ListTile(
+              title: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  color: ColorTheme.background,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 20),
+                          child: const CircleAvatar(
+                            maxRadius: 40,
+                            backgroundColor: ColorTheme.primary,
+                            foregroundColor: ColorTheme.white,
+                            child: Icon(Icons.person_rounded),
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("สวัสดี, ", style: CustomTextTheme.titleBold),
+                            Text(
+                              userName,
+                              style: CustomTextTheme.body,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.all(10),
+                      child: IconButton(
+                        color: ColorTheme.black,
+                        onPressed: () {
+                          Get.toNamed('/profile');
+                        },
+                        icon: const Icon(Icons.settings_rounded, size: 30),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.logout_rounded, size: 30),
+                color: ColorTheme.white,
+                onPressed: () {
+                  Get.offAllNamed('/login');
+                  authController.signOut();
+                },
+              ),
+            ),
+          );
   }
 
   Widget menuCard(

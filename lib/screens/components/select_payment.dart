@@ -64,7 +64,7 @@ Widget paymentCard({
           children: [
             Icon(
               icon,
-              color: ColorTheme.secondary,
+              color: ColorTheme.primary,
               size: 30,
             ),
             Container(

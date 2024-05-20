@@ -144,6 +144,7 @@ class _PaymentPageState extends State<PaymentPage> {
             transactionController.clearTransaction();
             Get.offAll(() => const MainPage());
             displaySnackbar(
+              status: CustomSnackbarStatus.success,
               title: 'สถาะการชำระเงิน',
               content: 'ชำระเงินด้วย PromptPay สำเร็จ',
             );

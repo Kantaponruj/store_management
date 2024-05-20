@@ -25,7 +25,7 @@ class _MainPageState extends State<MainPage> {
 
     final List listPage = [
       {
-        "icon": Icons.store,
+        "icon": Icons.storefront_rounded,
         "menuName": "POS",
         "page": const POSPage(),
       },

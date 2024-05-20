@@ -17,12 +17,11 @@ Map<ColorType, Color> getColors = {
 ThemeData designSystem = ThemeData(
   textTheme: GoogleFonts.ibmPlexSansThaiTextTheme(),
   primaryColor: ColorTheme.primary,
-  scaffoldBackgroundColor: const Color.fromRGBO(242, 242, 242, 1),
+  scaffoldBackgroundColor: ColorTheme.background,
   useMaterial3: true,
   colorScheme: ColorScheme.fromSwatch().copyWith(
     primary: ColorTheme.primary,
   ),
-  primaryTextTheme: const TextTheme(),
   appBarTheme: AppBarTheme(
     backgroundColor: ColorTheme.primary,
     foregroundColor: ColorTheme.white,
@@ -33,13 +32,15 @@ ThemeData designSystem = ThemeData(
     surfaceTintColor: Colors.transparent,
   ),
   inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: ColorTheme.white,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(color: getColors[ColorType.disabled]!),
+        borderSide: const BorderSide(color: Colors.transparent),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(color: getColors[ColorType.disabled]!),
+        borderSide: const BorderSide(color: Colors.transparent),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),

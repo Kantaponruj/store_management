@@ -15,6 +15,7 @@ import 'package:store_management/screens/components/product_category_card.dart';
 import 'package:store_management/screens/components/select_payment.dart';
 import 'package:store_management/screens/components/snack_bar.dart';
 import 'package:store_management/shared/theme/color_theme.dart';
+import 'package:store_management/utils/barcode_scanner.dart';
 
 import '../controllers/category_controller.dart';
 import '../models/product.dart';
@@ -130,24 +131,6 @@ class _POSPageState extends State<POSPage> {
     });
   }
 
-  Future<void> startBarcodeScanStream() async {
-    FlutterBarcodeScanner.getBarcodeStreamReceiver(
-      ColorTheme.primary.toString(),
-      "Cancel",
-      false,
-      ScanMode.BARCODE,
-    )!
-        .listen(
-      (barcode) {
-        List<String> listBarcode = [];
-        listBarcode.add(barcode.toString());
-        debugPrint("Barcode Type: ${barcode.runtimeType}");
-        debugPrint("Barcode: $barcode");
-        scanBarcode(barcodes: listBarcode);
-      },
-    );
-  }
-
   void scanBarcode({required List<String> barcodes}) {
     final listTranProduct = transactionController.transactionProducts;
     for (String barcode in barcodes) {
@@ -196,7 +179,13 @@ class _POSPageState extends State<POSPage> {
                 titleActions: [
                   // buildSearchBox(),
                   IconButton(
-                    onPressed: () => startBarcodeScanStream(),
+                    onPressed: () => startBarcodeScanStream(
+                      onScan: (barcode) {
+                        List<String> listBarcode = [];
+                        listBarcode.add(barcode.toString());
+                        scanBarcode(barcodes: listBarcode);
+                      },
+                    ),
                     icon: const Icon(
                       Icons.qr_code_scanner_outlined,
                     ),
@@ -286,7 +275,7 @@ class _POSPageState extends State<POSPage> {
         child: const CustomTextField(
           props: CustomTextFieldProps(
             topic: "",
-            prefix: Icon(Icons.search_outlined),
+            prefixIcon: Icon(Icons.search_outlined),
           ),
         ),
       ),

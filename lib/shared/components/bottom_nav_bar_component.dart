@@ -20,8 +20,9 @@ class BottomNavBarComponent extends StatelessWidget {
         currentIndex: currentIndex,
         onTap: onTap,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
+        backgroundColor: ColorTheme.white,
         selectedItemColor: ColorTheme.primary,
+        elevation: 0,
         items: listPage
             .map((item) => BottomNavigationBarItem(
                   icon: Icon(
