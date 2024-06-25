@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store_management/models/product.dart';
 import 'package:store_management/screens/components/product_detail.dart';
+import 'package:store_management/shared/components/app_bar_component.dart';
 import 'package:store_management/shared/theme/color_theme.dart';
 import 'package:store_management/shared/theme/text_theme.dart';
 
@@ -55,13 +56,8 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorTheme.primary,
-        foregroundColor: ColorTheme.white,
-        title: Text(
-          "รายการสินค้า",
-          style: CustomTextTheme.titleBold,
-        ),
+      appBar: CustomAppBarComponent(
+        title: "รายการสินค้า",
         actions: [
           IconButton(
             onPressed: () {

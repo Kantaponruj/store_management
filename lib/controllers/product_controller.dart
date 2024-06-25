@@ -27,9 +27,7 @@ class ProductController extends GetxController with StateMixin {
 
     change(null, status: RxStatus.loading());
 
-    Future.delayed(const Duration(seconds: 1), () async {
-      await fetchData();
-    });
+    await fetchData();
   }
 
   fetchData() async {
@@ -54,22 +52,21 @@ class ProductController extends GetxController with StateMixin {
   getAllProducts() async {
     change(null, status: RxStatus.loading());
     final listFromFirestore = FirestoreDb.productStream();
-    productList.bindStream(listFromFirestore);
-    productList.refresh();
+    listFromFirestore.listen((productList) async {
+      if (productList.isNotEmpty) {
+        var productsAsMap =
+            productList.map((product) => product.toJson()).toList();
+        String jsonString = jsonEncode(productsAsMap);
+        box.write('products', jsonString);
 
-    if (productList.isNotEmpty) {
-      var productsAsMap =
-          productList.map((product) => product.toJson()).toList();
-      String jsonString = jsonEncode(productsAsMap);
-      box.write('products', jsonString);
-
-      final storedString = box.read('products');
-      debugPrint('Stored product: $storedString');
-      await fetchData();
-      change(productList, status: RxStatus.success());
-    } else {
-      change(productList, status: RxStatus.empty());
-    }
+        final storedString = box.read('products');
+        debugPrint('Stored product: $storedString');
+        await fetchData();
+        change(productList, status: RxStatus.success());
+      } else {
+        change(productList, status: RxStatus.empty());
+      }
+    });
   }
 
   addProduct(ProductModel product) async {

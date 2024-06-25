@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:store_management/constants/firebase_auth_constants.dart';
+import 'package:store_management/shared/routes/routes.dart';
 import 'package:store_management/shared/theme/design_system.dart';
-import 'package:store_management/utils/routes.dart';
 
 // Project imports:
 import 'controllers/auth_controller.dart';

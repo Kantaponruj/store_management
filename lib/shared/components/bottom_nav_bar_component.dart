@@ -16,20 +16,32 @@ class BottomNavBarComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: onTap,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: ColorTheme.white,
-        selectedItemColor: ColorTheme.primary,
-        elevation: 0,
-        items: listPage
-            .map((item) => BottomNavigationBarItem(
-                  icon: Icon(
-                    item['icon'],
-                  ),
-                  label: item['menuName'] ?? item['title'],
-                ))
-            .toList());
+    return Theme(
+      data: Theme.of(context).copyWith(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+      ),
+      child: Container(
+        color: ColorTheme.white,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        child: BottomNavigationBar(
+            currentIndex: currentIndex,
+            onTap: onTap,
+            landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
+            type: BottomNavigationBarType.shifting,
+            selectedItemColor: ColorTheme.primary,
+            unselectedItemColor: ColorTheme.disabled,
+            elevation: 0,
+            items: listPage
+                .map((item) => BottomNavigationBarItem(
+                      backgroundColor: ColorTheme.white,
+                      icon: Icon(
+                        item['icon'],
+                      ),
+                      label: item['menuName'] ?? item['title'],
+                    ))
+                .toList()),
+      ),
+    );
   }
 }

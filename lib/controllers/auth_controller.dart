@@ -112,19 +112,24 @@ class AuthController extends GetxController with StateMixin {
     UserModel user = UserModel(email: email, password: password);
     final userMap = user.toJson();
 
-    try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
-      settings.write('user', jsonEncode(userMap));
-    } catch (firebaseAuthException) {
-      displaySnackbar(
-        status: CustomSnackbarStatus.error,
-        title: "เกิดข้อผิดพลาด",
-        content: firebaseAuthException.toString(),
-      );
-      debugPrint(firebaseAuthException.toString());
-    }
-
-    isLoadingLogin.value = false;
+    await auth
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then(
+      (value) {
+        settings.write('user', jsonEncode(userMap));
+        isLoadingLogin.value = false;
+      },
+    ).catchError(
+      (onError) {
+        displaySnackbar(
+          status: CustomSnackbarStatus.error,
+          title: "เกิดข้อผิดพลาด",
+          content: onError.toString(),
+        );
+        debugPrint(onError.toString());
+        isLoadingLogin.value = false;
+      },
+    );
   }
 
   void signOut() async {

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
+import 'package:store_management/constants/constant.dart';
 import 'package:store_management/controllers/product_controller.dart';
 import 'package:store_management/controllers/transaction_controller.dart';
 import 'package:store_management/models/category.dart';
 import 'package:store_management/models/components.dart';
 import 'package:store_management/models/transaction.dart';
 import 'package:store_management/screens/components/categories_tab_bar.dart';
-import 'package:store_management/screens/components/custom_button.dart';
 import 'package:store_management/screens/components/custom_text_fields.dart';
 import 'package:store_management/screens/components/display_product.dart';
 import 'package:store_management/screens/components/display_transaction.dart';
@@ -64,8 +63,6 @@ class _POSPageState extends State<POSPage> {
 
   @override
   Widget build(BuildContext context) {
-    final context = Get.context!;
-
     return Obx(() {
       final productList = productController.productList;
       final categoryList = categoryController.categoryList;
@@ -74,45 +71,11 @@ class _POSPageState extends State<POSPage> {
       return Container(
         color: ColorTheme.background,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: context.isPhone
+        child: isPhone
             ? Column(
                 children: <Widget>[
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: ColorTheme.white,
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                            child: CustomButton(
-                                buttonName: "เลือกสินค้า", onPressed: () {}),
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              String barcodeScanRes =
-                                  await FlutterBarcodeScanner.scanBarcode(
-                                ColorTheme.primary.toString(),
-                                "Cancel",
-                                true,
-                                ScanMode.BARCODE,
-                              );
-
-                              debugPrint(barcodeScanRes);
-                            },
-                            icon: const Icon(
-                              Icons.qr_code_scanner_outlined,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  displayProductSide(productList, categoryList),
+                  const SizedBox(height: 10),
                   displayTransactionSide(
                     transactionList: transactionList,
                     paddingLeft: false,
@@ -143,7 +106,7 @@ class _POSPageState extends State<POSPage> {
   Widget displayProductSide(
       RxList<ProductModel> productList, RxList<ProductCategory> categoryList) {
     return Expanded(
-      flex: 6,
+      flex: settings.read('isPhone') ? 3 : 6,
       child: Container(
         decoration: BoxDecoration(
           color: ColorTheme.white,
@@ -252,7 +215,7 @@ class _POSPageState extends State<POSPage> {
                 );
               },
             ),
-            const SizedBox(width: 20),
+            isPhone ? const SizedBox(height: 10) : const SizedBox(width: 20),
             paymentCard(
               text: "Prompt Pay",
               icon: Icons.qr_code_rounded,

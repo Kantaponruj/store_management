@@ -170,24 +170,28 @@ class CustomDropdownField extends StatelessWidget {
                 ),
               )
             : const SizedBox.shrink(),
-        DropdownButtonFormField(
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        ButtonTheme(
+          alignedDropdown: true,
+          child: DropdownButtonFormField(
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+            ),
+            isExpanded: true,
+            dropdownColor: ColorTheme.white,
+            onChanged: onChanged,
+            hint: Text(
+              hintText ?? "",
+            ),
+            items: items
+                .map((e) => DropdownMenuItem(
+                    value: e.value,
+                    child: Text(
+                      e.title,
+                      style: CustomTextTheme.body,
+                    )))
+                .toList(),
+            validator: validator,
           ),
-          dropdownColor: ColorTheme.white,
-          onChanged: onChanged,
-          hint: Text(
-            hintText ?? "",
-          ),
-          items: items
-              .map((e) => DropdownMenuItem(
-                  value: e.value,
-                  child: Text(
-                    e.title,
-                    style: CustomTextTheme.body,
-                  )))
-              .toList(),
-          validator: validator,
         ),
       ],
     );

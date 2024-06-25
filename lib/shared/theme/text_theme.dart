@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:store_management/constants/constant.dart';
 
 class CustomTextTheme {
-  static double largeSize = 22;
-  static double mediumSize = 18;
-  static double normalSize = 16;
-  static double smallSize = 14;
-  static double extraSmallSize = 12;
+  static double extraLargeSize = isPhone ? 26 : 30;
+  static double largeSize = isPhone ? 20 : 22;
+  static double mediumSize = isPhone ? 16 : 18;
+  static double normalSize = isPhone ? 14 : 16;
+  static double smallSize = isPhone ? 12 : 14;
+  static double extraSmallSize = isPhone ? 10 : 12;
 
   static String font = "IBM Plex Sans Thai";
 

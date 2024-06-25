@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:store_management/screens/components/calculator.dart';
+import 'package:store_management/shared/theme/color_theme.dart';
+import 'package:store_management/shared/theme/text_theme.dart';
 
 class CustomAppBarComponent extends StatefulWidget
     implements PreferredSizeWidget {
   final String title;
+  final List<Widget>? actions;
 
-  const CustomAppBarComponent({key, required this.title})
+  const CustomAppBarComponent({key, required this.title, this.actions})
       : preferredSize = const Size.fromHeight(kToolbarHeight),
-        super(key: key);
+        super(
+          key: key,
+        );
 
   @override
   final Size preferredSize; // default is 56.0
@@ -20,24 +24,13 @@ class _CustomAppBarComponentState extends State<CustomAppBarComponent> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      centerTitle: false,
-      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      title: Text(widget.title),
-      actions: [
-        IconButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return const AlertDialog(
-                  content: CalculatorComponent(),
-                );
-              },
-            );
-          },
-          icon: const Icon(Icons.calculate_rounded),
-        ),
-      ],
+      backgroundColor: ColorTheme.primary,
+      foregroundColor: ColorTheme.white,
+      title: Text(
+        widget.title,
+        style: CustomTextTheme.titleBold,
+      ),
+      actions: widget.actions,
     );
   }
 }

@@ -4,11 +4,13 @@ class CustomMenuItem {
   final String title;
   final IconData icon;
   final VoidCallback onTap;
+  final bool isShow;
 
   CustomMenuItem({
     required this.title,
     required this.icon,
     required this.onTap,
+    this.isShow = true,
   });
 }
 

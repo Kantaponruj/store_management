@@ -50,12 +50,11 @@ ThemeData designSystem = ThemeData(
         borderRadius: BorderRadius.circular(10),
         borderSide: BorderSide(color: getColors[ColorType.error]!),
       ),
-      prefixIconColor:
-          MaterialStateColor.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.focused)) {
+      prefixIconColor: WidgetStateColor.resolveWith((Set<WidgetState> states) {
+        if (states.contains(WidgetState.focused)) {
           return getColors[ColorType.primary]!;
         }
-        if (states.contains(MaterialState.error)) {
+        if (states.contains(WidgetState.error)) {
           return getColors[ColorType.error]!;
         }
         return getColors[ColorType.disabled]!;

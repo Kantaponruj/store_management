@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_management/constants/constant.dart';
 import 'package:store_management/controllers/category_controller.dart';
 
 import '../../shared/theme/color_theme.dart';
@@ -29,7 +30,7 @@ class CategoriesTabBarComponent extends GetView<CategoryController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -48,6 +49,7 @@ class CategoriesTabBarComponent extends GetView<CategoryController> {
           Expanded(
             child: controller.obx(
               (state) => Column(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: state != null
                     ? MainAxisAlignment.start
                     : MainAxisAlignment.center,
@@ -59,22 +61,30 @@ class CategoriesTabBarComponent extends GetView<CategoryController> {
                           padding: const EdgeInsets.only(left: 20),
                           tabAlignment: TabAlignment.start,
                           isScrollable: true,
-                          indicatorSize: TabBarIndicatorSize.tab,
+                          indicatorWeight: 1,
+                          indicatorSize: TabBarIndicatorSize.label,
                           indicator: const UnderlineTabIndicator(
                             borderSide: BorderSide.none,
                             borderRadius:
                                 BorderRadius.vertical(top: Radius.circular(20)),
                           ),
-                          indicatorPadding: const EdgeInsets.all(0),
+                          indicatorPadding: EdgeInsets.zero,
                           automaticIndicatorColorAdjustment: false,
                           overlayColor:
-                              MaterialStateProperty.all(Colors.transparent),
+                              WidgetStateProperty.all(Colors.transparent),
                           labelStyle: CustomTextTheme.subtitleBold,
                           labelColor: ColorTheme.primary,
                           unselectedLabelColor: ColorTheme.black,
                           unselectedLabelStyle: CustomTextTheme.body,
                           dividerHeight: 0,
-                          tabs: categories.map((e) => Tab(text: e)).toList(),
+                          labelPadding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 10),
+                          tabs: categories
+                              .map((e) => Tab(
+                                    text: e,
+                                    height: isPhone ? 30 : 40,
+                                  ))
+                              .toList(),
                         ),
                       ),
                       Row(

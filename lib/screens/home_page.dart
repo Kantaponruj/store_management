@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_management/constants/constant.dart';
 import 'package:store_management/controllers/auth_controller.dart';
 import 'package:store_management/models/components.dart';
 import 'package:store_management/shared/theme/color_theme.dart';
@@ -34,6 +35,15 @@ class _HomePageState extends State<HomePage> {
         onTap: () {
           Get.toNamed("/product");
         },
+        isShow: true,
+      ),
+      CustomMenuItem(
+        icon: Icons.storefront_rounded,
+        title: "Manual POS",
+        onTap: () {
+          Get.toNamed("/manual-pos");
+        },
+        isShow: !isPhone,
       ),
     ];
 
@@ -56,13 +66,17 @@ class _HomePageState extends State<HomePage> {
               ),
               Wrap(
                 spacing: 20,
-                children: menuItems
-                    .map((e) => menuCard(
-                          title: e.title,
-                          icon: e.icon,
-                          onTap: e.onTap,
-                        ))
-                    .toList(),
+                children: menuItems.map((e) {
+                  if (e.isShow) {
+                    return menuCard(
+                      title: e.title,
+                      icon: e.icon,
+                      onTap: e.onTap,
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                }).toList(),
               ),
             ],
           ),
@@ -72,19 +86,25 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget profileSection() {
-    return context.isPhone
+    return isPhone
         ? Container(
             color: ColorTheme.primary,
             alignment: Alignment.topLeft,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
             child: ListTile(
-              title: Text("สวัสดี, ", style: CustomTextTheme.titleBold),
-              subtitle: Text(userName, style: CustomTextTheme.subtitle),
+              title: Text("สวัสดี, ",
+                  style: CustomTextTheme.titleBold.copyWith(
+                    color: ColorTheme.white,
+                  )),
+              subtitle: Text(userName,
+                  style: CustomTextTheme.subtitle.copyWith(
+                    color: ColorTheme.white,
+                  )),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    color: ColorTheme.black,
+                    color: ColorTheme.white,
                     onPressed: () {
                       Get.toNamed('/profile');
                     },
@@ -111,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(10),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(50)),
-                  color: ColorTheme.background,
+                  color: ColorTheme.white,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -170,13 +190,14 @@ class _HomePageState extends State<HomePage> {
       {required String title,
       required IconData icon,
       required VoidCallback onTap}) {
+    final double size = isPhone ? 120 : 150;
     return InkWell(
       onTap: onTap,
       child: Card(
         color: ColorTheme.primary,
         child: SizedBox(
-          height: 150,
-          width: 150,
+          height: size,
+          width: size,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -184,7 +205,7 @@ class _HomePageState extends State<HomePage> {
               Icon(
                 icon,
                 color: ColorTheme.white,
-                size: 30,
+                size: CustomTextTheme.extraLargeSize,
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),

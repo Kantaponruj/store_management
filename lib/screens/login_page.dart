@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:store_management/constants/constant.dart';
 import 'package:store_management/constants/firebase_auth_constants.dart';
 import 'package:store_management/screens/components/custom_button.dart';
 import 'package:store_management/screens/components/custom_text_fields.dart';
+import 'package:store_management/shared/layout/scroll_column.dart';
 import 'package:store_management/shared/theme/color_theme.dart';
 import 'package:store_management/shared/theme/text_theme.dart';
 import 'package:store_management/utils/validator.dart';
@@ -30,62 +32,62 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final context = Get.context!;
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: ColorTheme.background,
       body: SafeArea(
-        child: Center(
-          child: context.isPhone
-              ? SingleChildScrollView(
-                  child: ListView(
-                    shrinkWrap: true,
-                    // crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        color: ColorTheme.white,
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 20),
-                              child: appLogo(),
-                            ),
-                            imageSection(size.width * 0.6),
-                          ],
+        child: ScrollColumnExpandable(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Center(
+              child: isPhone
+                  ? Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          color: ColorTheme.white,
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 20),
+                                child: appLogo(),
+                              ),
+                              imageSection(size.width * 0.4),
+                            ],
+                          ),
                         ),
-                      ),
-                      loginFormSection(),
-                    ],
-                  ),
-                )
-              : Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        color: ColorTheme.white,
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          children: [
-                            appLogo(),
-                            Expanded(
-                              child: imageSection(size.height * 0.4),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Container(
-                          child: loginFormSection(),
-                        ),
-                      ),
+                        loginFormSection(),
+                      ],
                     )
-                  ],
-                ),
+                  : Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            color: ColorTheme.white,
+                            padding: const EdgeInsets.all(20),
+                            height: size.height - 30,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                appLogo(),
+                                Expanded(
+                                  child: imageSection(size.height * 0.4),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: loginFormSection(),
+                        )
+                      ],
+                    ),
+            ),
+          ],
         ),
       ),
     );
@@ -95,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
     return Row(
       children: [
         Container(
-          width: context.isPhone ? 60 : 80,
+          width: isPhone ? 50 : 80,
           padding: const EdgeInsets.only(right: 10),
           child: Image.asset(
             "assets/images/logo.png",
@@ -120,6 +122,7 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         SizedBox(
           height: height,
+          width: height,
           child: FittedBox(
             fit: BoxFit.fitHeight,
             child: SvgPicture.asset(
@@ -221,11 +224,13 @@ class _LoginPageState extends State<LoginPage> {
 
                     debugPrint("email: $email, password: $password");
 
-                    setState(() {});
+                    setState(() {
+                      if (validate == true) {
+                        authController.login(email, password);
+                      }
 
-                    if (validate == true) {
-                      authController.login(email, password);
-                    }
+                      setState(() {});
+                    });
                   },
                   icon: Icons.login_rounded,
                 ),

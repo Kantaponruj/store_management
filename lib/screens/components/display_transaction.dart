@@ -53,7 +53,7 @@ class DisplayTransaction extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -125,27 +125,10 @@ class DisplayTransaction extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    child: buildTotalText(
-                      title: CustomText(
-                        text: "รายการทั้งหมด",
-                        style: CustomTextTheme.bodyMedium,
-                      ),
-                      content: CustomText(
-                        text: totalProduct,
-                        style: CustomTextTheme.bodyMedium,
-                      ),
-                      trailling: CustomText(
-                        text: "ชิ้น",
-                        style: CustomTextTheme.body,
-                      ),
-                    ),
-                  ),
-                  Padding(
                     padding: const EdgeInsets.all(16),
                     child: buildTotalText(
                       title: CustomText(
-                        text: "รวมทั้งสิ้น",
+                        text: "รวมทั้งสิ้น  $totalProduct  ชิ้น",
                         style: CustomTextTheme.bodyMedium,
                       ),
                       content: CustomText(

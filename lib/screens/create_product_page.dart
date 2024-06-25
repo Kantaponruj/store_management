@@ -80,7 +80,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                             margin: const EdgeInsets.symmetric(vertical: 10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: ColorTheme.disabled,
+                              color: ColorTheme.white,
                             ),
                             alignment: Alignment.center,
                             child: InkWell(
@@ -185,6 +185,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               topic: "คำอธิบาย",
                               maxLines: 3,
                               maxLength: 150,
+                              hintText: "คำอธิบายสินค้า",
                             ),
                           ),
                           CustomTextField(

@@ -3,6 +3,7 @@ import 'package:store_management/screens/category_page.dart';
 import 'package:store_management/screens/create_product_page.dart';
 import 'package:store_management/screens/home_page.dart';
 import 'package:store_management/screens/main_page.dart';
+import 'package:store_management/screens/manual_pos_page.dart';
 import 'package:store_management/screens/payment_page.dart';
 import 'package:store_management/screens/pos_page.dart';
 import 'package:store_management/screens/product_page.dart';
@@ -16,6 +17,11 @@ appRoutes() => [
       GetPage(
         name: '/home',
         page: () => const HomePage(),
+        middlewares: [MyMiddelware()],
+      ),
+      GetPage(
+        name: '/manual-pos',
+        page: () => const ManualPOSPage(),
         middlewares: [MyMiddelware()],
       ),
       GetPage(

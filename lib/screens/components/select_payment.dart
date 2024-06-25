@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:store_management/constants/constant.dart';
 import 'package:store_management/shared/theme/color_theme.dart';
 import 'package:store_management/shared/theme/text_theme.dart';
 
@@ -25,9 +26,13 @@ class SelectPayment extends StatelessWidget {
               style: CustomTextTheme.body,
             ),
           ),
-          Row(
-            children: paymentList,
-          ),
+          isPhone
+              ? Column(
+                  children: paymentList,
+                )
+              : Row(
+                  children: paymentList,
+                ),
         ],
       ),
     );

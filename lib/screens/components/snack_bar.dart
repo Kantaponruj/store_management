@@ -5,14 +5,14 @@ import 'package:store_management/shared/theme/text_theme.dart';
 
 enum CustomSnackbarStatus { success, error, info }
 
-Color getSnackbarColor(CustomSnackbarStatus status, {double opacity = 0.2}) {
-  // double thisOpacity = opacity > 1 ? 1 : opacity;
+Color getSnackbarColor(CustomSnackbarStatus status, {double opacity = 0.8}) {
+  double thisOpacity = opacity > 1 ? 1 : opacity;
 
   switch (status) {
     case CustomSnackbarStatus.success:
-      return ColorTheme.white;
+      return ColorTheme.white.withOpacity(thisOpacity);
     case CustomSnackbarStatus.error:
-      return ColorTheme.white;
+      return ColorTheme.white.withOpacity(thisOpacity);
     case CustomSnackbarStatus.info:
       return ColorTheme.disabled.withOpacity(0.5);
   }

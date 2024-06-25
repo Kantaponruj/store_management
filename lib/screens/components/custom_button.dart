@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:store_management/constants/constant.dart';
 import 'package:store_management/shared/theme/text_theme.dart';
 
 import '../../shared/theme/color_theme.dart';
@@ -78,7 +79,7 @@ class CustomButton extends StatelessWidget {
               ),
         onPressed: isLoading ? null : onPressed,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15),
+          padding: EdgeInsets.symmetric(vertical: isPhone ? 10 : 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: isLoading

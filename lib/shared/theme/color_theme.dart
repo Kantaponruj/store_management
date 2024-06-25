@@ -5,7 +5,7 @@ class ColorTheme {
   static const Color secondary = Color(0xFF6F91EB);
   static const Color background = Color(0xFFF3F7FF);
 
-  static const Color success = Color(0xFF06D6A0);
+  static const Color success = Color(0xFF41A447);
   static const Color successBackground = Color(0xFF38DEB3);
   static const Color error = Color(0xFFFF595E);
   static const Color errorBackground = Color(0xFFFF7A7A);

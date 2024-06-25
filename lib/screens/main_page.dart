@@ -26,17 +26,17 @@ class _MainPageState extends State<MainPage> {
     final List listPage = [
       {
         "icon": Icons.storefront_rounded,
-        "menuName": "POS",
+        "title": "POS",
         "page": const POSPage(),
       },
       {
-        "icon": Icons.book,
-        "title": "Manual POS",
+        "icon": Icons.inventory_rounded,
+        "title": "คลังสินค้า",
         "page": const ManualPOSPage(),
       },
       {
         "icon": Icons.more_horiz,
-        "title": "More",
+        "title": "อื่น ๆ",
         "page": const HomePage(),
       },
     ];
